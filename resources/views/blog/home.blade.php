@@ -16,7 +16,7 @@
                 <div class="post-item col-md-3">
                     <a href="{{ route('blog.show', ['id' => $post->id, 'slug' => $post->slug]) }}" class="m-1 card text-decoration-none">
                         <div class="m-1 card">
-                            <img src="{{ $post->imageUrl }}" height="200" alt="">    
+                            <img src="{{ Str::startswith($post->imageUrl, 'http') ? $post->imageUrl : Storage::url($post->imageUrl) }}" height="200px" alt="">    
                             <div class="post-details p-1">
                                 <h4> {{ $post->title }} </h4>
                                 <p> {{ $post->description }} </p>

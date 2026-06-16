@@ -8,12 +8,14 @@
 <?php $__env->startSection('container'); ?>
     <h1><?php echo e($post->title); ?></h1>
 
-    <div class="post-img">
-        <img src="<?php echo e($post->imageUrl); ?>" class="img-fluid card" width="100px" height="200px" alt="">
+    <div class="post-group d-flex" id="preview_imageUrl" style="max-width: 100%;">
+        <img src="<?php echo e(Str::startswith($post->imageUrl, 'http') ? $post->imageUrl : Storage::url($post->imageUrl)); ?>"
+            alt="Prévisualisation de l'image"
+            style="max-width: 100px; display:block;">
     </div>
     <strong><?php echo e($post->created_at->diffForHumans()); ?></strong>
     <div class="post-content text-justify">
-        <?php echo e($post->content); ?>
+        <?php echo $post->content; ?>
 
     </div>
 <?php $__env->stopSection(); ?>

@@ -17,7 +17,7 @@
                 <div class="post-item col-md-3">
                     <a href="<?php echo e(route('blog.show', ['id' => $post->id, 'slug' => $post->slug])); ?>" class="m-1 card text-decoration-none">
                         <div class="m-1 card">
-                            <img src="<?php echo e($post->imageUrl); ?>" height="200" alt="">    
+                            <img src="<?php echo e(Str::startswith($post->imageUrl, 'http') ? $post->imageUrl : Storage::url($post->imageUrl)); ?>" height="200px" alt="">    
                             <div class="post-details p-1">
                                 <h4> <?php echo e($post->title); ?> </h4>
                                 <p> <?php echo e($post->description); ?> </p>

@@ -7,11 +7,14 @@
 @section('container')
     <h1>{{ $post->title }}</h1>
 
-    <div class="post-img">
-        <img src="{{ $post->imageUrl }}" class="img-fluid card" width="100px" height="200px" alt="">
+    
+    <div class="post-group d-flex" id="preview_imageUrl" style="max-width: 100%;">
+        <img src="{{ Str::startswith($post->imageUrl, 'http') ? $post->imageUrl : Storage::url($post->imageUrl) }}"
+            alt="Prévisualisation de l'image"
+            style="max-width: 100px; display:block;">
     </div>
     <strong>{{ $post->created_at->diffForHumans() }}</strong>
     <div class="post-content text-justify">
-        {{ $post->content }}
+        {!! $post->content !!}
     </div>
 @endsection

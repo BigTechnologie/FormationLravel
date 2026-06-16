@@ -5,72 +5,6 @@ use Illuminate\Support\Facades\Route;
 //use App\Http\Controllers\PostController;
 use App\Http\Controllers\BlogController;
 
-/*
-
-//======================================= 1 1=================================//
-//1- Les routes dans Laravel
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-// Retourner une chaine
-Route::get('/hello', function() {
-    return 'Hello Dawan';
-});
-
-// Retourner du json
-Route::get('/data', function () {
-    return [
-        'name' => 'Cédric',
-        'code-postal' => 56
-    ];
-});
-*/
-/*
-//======================================= 1 1=================================//
-// Nommage des routes :
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
-
-// Préfixage des routes
-Route::prefix('post')->name('post.')->group(function() {
-    Route::get('/hello', function () {
-    return 'Hello Dawan';
-})->name('hello');
-
-Route::get('/show/{slug}-{id}', function (string $slug, int $id) {
-    return [
-        'slug' => $slug,
-        'id' => $id
-    ];
-})->where(['id' => '[0-9]+', 'slug' => '[a-z0-9-]+'])->name('show');
-
-Route::get('/data', function(Request $request) {
-    return [
-        'name' => $request->input('names', 'Cédric'),
-        'value' => $request->input('value', '22'),
-        'all' => $request->all() // Permet de recuperer toutes les valeurs en faisant : http://127.0.0.1:8000/data?name=dawan&year=2026&value=new
-    ];
-})->name('data');
-
-// Les rédirections
-Route::get('/new', function() {
-    // return [
-    //     //'wWelcome' => route('welcome')
-    //     'hello' => route('hello')
-    // ];
-    //return to_route('post.show', ['id' => 96, 'slug' => 'new-article-laravel']);
-    //return redirect()->route('welcome');
-    return redirect()->route('post.data');
-    
-})->name('new');
-
-});
-
-*/
-
 Route::get('/', 'App\Http\Controllers\BlogController@index')->name('welcome');
 
 Route::prefix('blog')->namespace('App\Http\Controllers')->name('blog.')->group(function() {
@@ -88,11 +22,30 @@ Route::fallback(function() {
     return "Ooops Cette page n'existe pas !";
 });
 
+Route::prefix('admin')->name('admin.')->group(function(){
 
+    //Get Posts datas
+    Route::get('/posts', 'App\Http\Controllers\PostController@index')->name('post.index');
 
+    //Show Post by Id
+    Route::get('/posts/show/{id}', 'App\Http\Controllers\PostController@show')->name('post.show');
 
+    //Get Posts by Id
+    Route::get('/posts/create', 'App\Http\Controllers\PostController@create')->name('post.create');
 
+    //Edit Post by Id
+    Route::get('/posts/edit/{id}', 'App\Http\Controllers\PostController@edit')->name('post.edit');
 
+    //Save new Post
+    Route::post('/posts/store', 'App\Http\Controllers\PostController@store')->name('post.store');
 
+    //Update One Post
+    Route::put('/posts/update/{post}', 'App\Http\Controllers\PostController@update')->name('post.update');
 
+    //Update One Post Speedly
+    Route::put('/posts/speed/{post}', 'App\Http\Controllers\PostController@updateSpeed')->name('post.update.speed');
 
+    //Delete Post
+    Route::delete('/posts/delete/{post}', 'App\Http\Controllers\PostController@delete')->name('post.delete');
+
+});
