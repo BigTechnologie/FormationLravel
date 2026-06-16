@@ -1,0 +1,75 @@
+body {
+    border: 2px solid rgb(241, 208, 19) !important;
+}
+
+
+/* Style général pour les titres */
+h4 {
+    color: rgb(224, 210, 15);
+}
+
+/* Conteneur global des posts */
+.posts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around;
+}
+
+/* Élément de post individuel */
+.post-item {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    margin: 10px;
+    transition: transform 0.2s ease;
+    color: white;
+}
+
+.post-item:hover {
+    transform: scale(1.05);
+}
+
+/* Différenciation entre pair et impair */
+.post-item.pair {
+    background-color: beige;
+    color: black;
+}
+
+.post-item.impair {
+    background-color: burlywood;
+    color: black;
+}
+
+/* Zone d’image du post */
+.post-img {
+    text-align: center;
+}
+
+.post-img img {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px;
+    border-radius: 8px;
+}
+
+/* Titre du post */
+.post-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+
+/* Description du post */
+.post-description {
+    text-align: justify;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Liens */
+a {
+    text-decoration: inherit;
+}
