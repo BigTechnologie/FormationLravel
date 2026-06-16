@@ -14,7 +14,7 @@
         <div class="posts row gx-0">
             @foreach ($posts as $post)
                 <div class="post-item col-md-3">
-                    <a href="{{ route('post.show', ['id' => $post->id, 'slug' => $post->slug]) }}" class="m-1 card text-decoration-none">
+                    <a href="{{ route('blog.show', ['id' => $post->id, 'slug' => $post->slug]) }}" class="m-1 card text-decoration-none">
                         <div class="m-1 card">
                             <img src="{{ $post->imageUrl }}" height="200" alt="">    
                             <div class="post-details p-1">

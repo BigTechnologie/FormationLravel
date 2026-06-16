@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 //use Illuminate\Http\Request;
-use App\Http\Controllers\PostController;
+//use App\Http\Controllers\PostController;
+use App\Http\Controllers\BlogController;
 
 /*
 
@@ -70,18 +71,16 @@ Route::get('/new', function() {
 
 */
 
-Route::get('/', 'App\Http\Controllers\PostController@index')->name('welcome');
+Route::get('/', 'App\Http\Controllers\BlogController@index')->name('welcome');
 
-Route::prefix('post')->namespace('App\Http\Controllers')->name('post.')->group(function() {
-    Route::get('/hello', [PostController::class, 'hello'])->name('hello'); // Route::get('/hello', 'PostController@hello')->name('hello');
+Route::prefix('blog')->namespace('App\Http\Controllers')->name('blog.')->group(function() {
 
-    Route::get('/show/{slug}-{id}', [PostController::class, 'show'])
+    Route::get('/show/{slug}-{id}', [BlogController::class, 'show'])
         ->where(['id' => '[0-9]+', 'slug' => '[a-z0-9-]+'])
         ->name('show');
 
-    Route::get('/data', [PostController::class, 'data'])->name('data');    
-
-    Route::get('/new', [PostController::class, 'new'])->name('new');    
+    Route::get('/categories', [BlogController::class, 'categories'])->name('categories');    
+    Route::get('/categories/show/{id}', [BlogController::class, 'showCategory'])->name('show.category');
 });
 
 // Les routes de secours (erreur 404)
