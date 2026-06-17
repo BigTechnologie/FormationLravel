@@ -50,6 +50,14 @@
     <a class="nav-link" href="{{route('admin.post.index')}}">
         Posts
     </a>
+</li><li class="nav-item">
+    <a class="nav-link" href="{{route('admin.category.index')}}">
+        Categories
+    </a>
+</li><li class="nav-item">
+    <a class="nav-link" href="{{route('admin.user.index')}}">
+        Users
+    </a>
 </li></ul>
                 </div>
             </nav>

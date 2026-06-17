@@ -14,6 +14,32 @@
           </li>
 
         </ul>
+
+        <?php if(auth()->guard()->check()): ?>
+
+          <form action="<?php echo e(route('logout')); ?>" method="POST">
+            <?php echo csrf_field(); ?>
+            
+            <?php echo method_field('DELETE'); ?>
+
+            <button class="btn btn-danger me-1">
+              Logout
+            </button>
+          </form>
+            <?php if(auth()->user()->roles && in_array('ROLE_ADMIN', json_decode(auth()->user()->roles))): ?>
+              <a href="<?php echo e(route('admin.post.index')); ?>" class="btn btn-success">
+                Admin 
+              </a>
+            <?php endif; ?>
+        <?php else: ?>
+            <a href="<?php echo e(route('login')); ?>" class="btn btn-warning me-1">
+              Login  
+            </a>
+            <a href="<?php echo e(route('register')); ?>" class="btn btn-success">
+              Register   
+            </a>
+
+        <?php endif; ?>
         
       </div>
     </div>

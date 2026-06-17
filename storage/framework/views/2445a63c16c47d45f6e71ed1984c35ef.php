@@ -10,6 +10,13 @@
 
         <?php echo $description; ?>
 
+
+        <?php if(session('success')): ?>
+            <div class="alert alert-success">
+                <?php echo e(session('success')); ?>
+
+            </div>
+        <?php endif; ?>
         
 
         <div class="posts row gx-0">

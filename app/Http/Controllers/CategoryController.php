@@ -2,43 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\Category;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\PostFormRequest;
+use App\Http\Requests\CategoryFormRequest;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Category;
 
-class PostController extends Controller
+class CategoryController extends Controller
 {
-    
     public function index(): View
     {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(5);
-        return view('posts.index', ['posts' => $posts]);
+        $categories = Category::orderBy('created_at', 'desc')->paginate(5);
+        return view('categories/index', ['categories' => $categories]);
     }
 
     public function show($id): View
     {
-        $post = Post::findOrFail($id);
+        $category = Category::findOrFail($id);
 
-        return view('posts.show',['post' => $post]);
+        return view('categories/show',['category' => $category]);
     }
     public function create(): View
     {
-        $categories = Category::all();
-        return view('posts.create', ['categories' => $categories]);
+        return view('categories/create');
     }
 
     public function edit($id): View
     {
-        $post = Post::findOrFail($id);
-        $categories = Category::all();
-        return view('posts.edit', ['post' => $post, 'categories' => $categories]);
+        $category = Category::findOrFail($id);
+        return view('categories/edit', ['category' => $category]);
     }
 
-    public function store(PostFormRequest $req): RedirectResponse
+    public function store(CategoryFormRequest $req): RedirectResponse
     {
         $data = $req->validated();
 
@@ -46,31 +42,31 @@ class PostController extends Controller
         $data['imageUrl'] = $this->handleImageUpload($req->file('imageUrl'));
     }
 
-        $post = Post::create($data);
-        return redirect()->route('admin.post.show', ['id' => $post->id])->with("success", "Post has been saved !");
+        $category = Category::create($data);
+        return redirect()->route('admin.category.show', ['id' => $category->id]);
     }
 
-    public function update(Post $post, PostFormRequest $req)
+    public function update(Category $category, CategoryFormRequest $req)
     {
         $data = $req->validated();
 
             if ($req->hasFile('imageUrl')) {
         // Suppression de l'ancienne image si elle existe
-        if ($post->imageUrl) {
-            Storage::disk('public')->delete($post->imageUrl);
+        if ($category->imageUrl) {
+            Storage::disk('public')->delete($category->imageUrl);
         }
         $data['imageUrl'] = $this->handleImageUpload($req->file('imageUrl'));
     }
 
-        $post->update($data);
+        $category->update($data);
 
-        return redirect()->route('admin.post.show', ['id' => $post->id]);
+        return redirect()->route('admin.category.show', ['id' => $category->id]);
     }
 
-    public function updateSpeed(Post $post, Request $req)
+    public function updateSpeed(Category $category, Request $req)
     {
         foreach ($req->all() as $key => $value) {
-            $post->update([
+            $category->update([
                 $key => $value
             ]);
         }
@@ -81,12 +77,12 @@ class PostController extends Controller
         ];
     }
 
-    public function delete(Post $post)
+    public function delete(Category $category)
     {
-            if ($post->imageUrl) {
-        Storage::disk('public')->delete($post->imageUrl);
+            if ($category->imageUrl) {
+        Storage::disk('public')->delete($category->imageUrl);
     }
-        $post->delete();
+        $category->delete();
 
         return [
             'isSuccess' => true

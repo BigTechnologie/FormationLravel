@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 use App\Models\Post;
 use EsperoSoft\Faker\Faker;
 use Illuminate\Support\Str;
 use App\Models\Category;
+use App\Http\Requests\UserFormRequest;
+use App\Models\User;
+use App\Http\Requests\LoginFormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
@@ -74,4 +78,48 @@ class BlogController extends Controller
         return view('blog.showCategory', ["category" => $category, "posts" => $posts]);
     }
 
+    public function register()
+    {
+        return view("blog.register");
+    }
+
+    public function registerSave(UserFormRequest $request)
+    {
+        $data = $request->validated();
+        //dd($data); 
+        $data["password"] = bcrypt($data["password"]);
+        //dd($data);
+        $user = User::create($data);
+
+        return redirect()->route("admin.post.index")->with("success", "Votre inscription a réussi");
+    }
+
+    public function login()
+    {
+        return view("blog.login");
+    }
+
+    public function authenticate(LoginFormRequest $request)
+    {
+        $user = $request->validated();
+        //dd($user);
+        if(Auth::attempt($user)) {
+            return redirect()->route("welcome")->with("success", "You are well connected !");
+        }else {
+            return redirect()->route("login")->with("error", "Incorrect indentifiers !");
+        }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect()->route("welcome")->with("success", "You are disconnected !");
+        
+    }
+
+
+
 }
+
+// page1 => nb elm par page * (page courente -1) => 20*(2-1) = 20
