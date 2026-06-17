@@ -4,8 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminRole
 {
@@ -16,14 +16,7 @@ class AdminRole
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (
-            Auth::check() &&
-            Auth::user()->roles &&
-            in_array(
-                'ROLE_ADMIN',
-                json_decode(Auth::user()->roles, true) ?? []
-            )
-        ) {
+        if (Auth::check() && Auth::user()->roles && in_array('ROLE_ADMIN', json_decode(Auth::user()->roles, true) ?? [])) {
             return $next($request);
         }
 

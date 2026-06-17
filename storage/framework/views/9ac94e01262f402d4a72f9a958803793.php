@@ -9,6 +9,14 @@
         <a href="<?php echo e(route('admin.post.index')); ?>" class="btn btn-success my-1">
             Home
         </a>
+
+        <?php if(session('success')): ?>
+            <div class="alert alert-success">
+                <?php echo e(session('success')); ?>
+
+            </div>
+        <?php endif; ?>
+
         <div class="table-responsive">
         <table class="table table-bordered">
             <tbody>
