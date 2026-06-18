@@ -14,14 +14,21 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostController extends Controller
 {
+
+    private const POSTS_CACHE_KEY = 'posts_all_array';
+    private const CACHE_DURATION_MINUTES = 10;
     
     public function index(): View
     {
+
         $page = (int) request()->input('page', 1);
 
         $perPage = 8;
 
-        $postsData = Cache::remember('posts_all_array', now()->addMinutes(10), function() {
+        $postsData = Cache::remember(
+            self::POSTS_CACHE_KEY, 
+            now()->addMinutes(self::CACHE_DURATION_MINUTES), 
+            function() {
             return Post::orderBy('created_at', 'desc')
                 ->get()
                 ->map(fn ($post) => $post->toArray())
@@ -50,7 +57,10 @@ class PostController extends Controller
     public function show($id): View
     {
 
-        $postData = Cache::remember("post_{$id}", now()->addMinutes(10), function () use ($id) {
+        $postData = Cache::remember(
+            $this->postCacheKey($id), 
+            now()->addMinutes(self::CACHE_DURATION_MINUTES), 
+            function () use ($id) {
             return Post::findOrFail($id)->toArray();
         });
         
@@ -81,7 +91,7 @@ class PostController extends Controller
 
         $post = Post::create($data);
 
-        Cache::forget('posts_all_array');
+        Cache::forget(self::POSTS_CACHE_KEY);
         
         return redirect()->route('admin.post.show', ['id' => $post->id])->with("success", "Post has been saved !");
     }
@@ -100,9 +110,9 @@ class PostController extends Controller
 
         $post->update($data);
 
-        Cache::forget('posts_all_array');
+        Cache::forget(self::POSTS_CACHE_KEY);
 
-        Cache::forget("post_{$post->id}");
+        Cache::forget($this->postCacheKey($id));
 
         return redirect()->route('admin.post.show', ['id' => $post->id]);
     }
@@ -117,7 +127,7 @@ class PostController extends Controller
 
         Cache::forget('posts_all_array');
 
-        Cache::forget("post_{$post->id}");
+        Cache::forget($this->postCacheKey($id));
 
         return [
             'isSuccess' => true,
@@ -135,14 +145,20 @@ class PostController extends Controller
 
         $post->delete();
 
-        Cache::forget('posts_all_array');
+        Cache::forget(self::POSTS_CACHE_KEY);
 
-        Cache::forget("post_{$postId}");
+        Cache::forget($this->postCacheKey($postId));
 
         return [
             'isSuccess' => true
         ];
     }
+
+    private function postCacheKey(int|string $id): string
+    {
+        return "post_{$id}";
+    }
+
 
         private function handleImageUpload(\Illuminate\Http\UploadedFile|array $images): string|array
     {
