@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
 use Illuminate\Auth\Middleware\Authenticate;
+use App\Http\Controllers\MailController;
+
+// Mail
+Route::get('/send-mail', [MailController::class, 'showForm'])->name('send.mail.form');
+Route::post('/send-mail', [MailController::class, 'sendMail'])->name('send.mail');
 
 // L'nternatinalisation
 Route::get('/greeting/{locale}', function(string $locale) {
